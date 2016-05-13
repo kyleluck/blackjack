@@ -2,6 +2,10 @@ body {
   background: #00a651;
 }
 
+h2, button {
+  font-family: 'Lobster', cursive;
+}
+
 .card {
   position: relative;
   float: left;
@@ -9,7 +13,7 @@ body {
   height: 220px;
   background: #fff;
   border-radius: 10px;
-  margin-right: 10px;
+  margin-right: 5px;
   box-shadow: 3px 3px 7px rgba(0,0,0,0.3);
 }
 
@@ -88,4 +92,36 @@ div[class*='suit']:after {
 
 .card:hover {
   cursor: pointer;
+}
+
+.deck {
+  position: absolute;
+  top: 82px;
+  right: 30px;
+  width: 175px;
+  height: 220px;
+}
+
+.deckcard {
+  position: absolute;
+}
+
+#deck1 {
+  left: 10px;
+}
+
+#deck2 {
+  left: 7px;
+}
+
+#deck3 {
+  left: 4px;
+}
+
+.playbuttons {
+  margin-top: 50px;
+}
+
+.row {
+  margin-top: 20px;
 }

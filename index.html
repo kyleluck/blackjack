@@ -14,21 +14,69 @@
   </head>
   <body>
     <div class="container">
+      <h2>Dealer</h2>
       <div class="row">
-        <div class="card suitdiamonds">
-          <p>A</p>
+        <div class="col col-md-2">
+          <div class="card suitdiamonds">
+            <p>A</p>
+          </div>
         </div>
-        <div class="card suitclubs">
-          <p>K</p>
+        <div class="col col-md-2">
+          <div class="card suitclubs">
+            <p>K</p>
+          </div>
         </div>
-        <div class="card suithearts">
-          <p>2</p>
+        <div class="col col-md-2">
+          <div class="card suithearts">
+            <p>2</p>
+          </div>
         </div>
-        <div class="card cardback suitback">
-          <p>Kyle Luck</p>
+        <div class="col col-md-2">
+          <div class="card cardback suitback">
+            <p>Kyle Luck</p>
+          </div>
+        </div>
+
+        <div class="deck">
+          <div class="card cardback suitback deckcard" id="deck1"><p>Kyle Luck</p></div>
+          <div class="card cardback suitback deckcard" id="deck2"><p>Kyle Luck</p></div>
+          <div class="card cardback suitback deckcard" id="deck3"><p>Kyle Luck</p></div>
+        </div>
+      </div> <!-- end row -->
+      <h2>Player</h2>
+      <div class="row">
+        <div class="col col-md-2">
+          <div class="card suitdiamonds">
+            <p>A</p>
+          </div>
+        </div>
+        <div class="col col-md-2">
+          <div class="card suitclubs">
+            <p>K</p>
+          </div>
+        </div>
+        <div class="col col-md-2">
+          <div class="card suithearts">
+            <p>2</p>
+          </div>
+        </div>
+        <div class="col col-md-2">
+          <div class="card cardback suitback">
+            <p>Kyle Luck</p>
+          </div>
         </div>
       </div>
-    </div>
+
+      <div class="row">
+        <div class="col col-md-4 col-md-offset-4">
+          <div class="btn-group btn-group-lg playbuttons" role="group">
+            <button type="button" name="button" class="btn btn-default">Deal</button>
+            <button type="button" name="button" class="btn btn-default">Hit</button>
+            <button type="button" name="button" class="btn btn-default">Stand</button>
+          </div>
+        </div>
+      </div> <!-- end row -->
+    </div> <!-- end container -->
     <script src="jquery.js"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
