@@ -3,10 +3,9 @@ function createDeck () {
   var fullDeck = [];
   var cards2toAce = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
   var suits = ['diamonds', 'spades', 'hearts', 'clubs'];
-  $.each(suits, function( index, value ) {
-    alert( index + ": " + value );
-    $.each(cards2toAce, function( index, value ) {
-      fullDeck.push({suit: suits[i], point: cards2toAce[j]});
+  $.each(suits, function( indexSuits, valueSuits ) {
+    $.each(cards2toAce, function( indexCards, valueCards ) {
+      fullDeck.push({suit: suits[indexSuits], point: cards2toAce[indexCards]});
     });
   });
   return fullDeck;
