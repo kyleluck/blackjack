@@ -1,4 +1,15 @@
-var card = {suit: 'Diamond', point: 10};
+
+function createDeck () {
+  var fullDeck = [];
+  var cards2toAce = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
+  var suits = ['diamonds', 'spades', 'hearts', 'clubs'];
+  for (var i = 0; i < suits.length; i++) {
+    for (var j = 0; j < cards2toAce.length; j++) {
+      fullDeck.push({suit: suits[i], point: cards2toAce[j]});
+    }
+  }
+  return fullDeck;
+}
 //deck & hand are arrays of objects ^
 //function to generate deck
 //function to shuffle cards
