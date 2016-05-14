@@ -3,15 +3,23 @@ function createDeck () {
   var fullDeck = [];
   var cards2toAce = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
   var suits = ['diamonds', 'spades', 'hearts', 'clubs'];
-  for (var i = 0; i < suits.length; i++) {
-    for (var j = 0; j < cards2toAce.length; j++) {
+  $.each(suits, function( index, value ) {
+    alert( index + ": " + value );
+    $.each(cards2toAce, function( index, value ) {
       fullDeck.push({suit: suits[i], point: cards2toAce[j]});
-    }
-  }
+    });
+  });
   return fullDeck;
 }
+
+function shuffleDeck (deck) {
+  var shuffledDeck = createDeck();
+  var i = 0;
+
+
+}
 //deck & hand are arrays of objects ^
-//function to generate deck
+//**function to generate deck
 //function to shuffle cards
 //function count points in hand
 //function to compare dealer hand vs player hand
