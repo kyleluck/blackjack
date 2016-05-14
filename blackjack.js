@@ -11,12 +11,24 @@ function createDeck () {
   return fullDeck;
 }
 
-function shuffleDeck (deck) {
-  var shuffledDeck = createDeck();
-  var i = 0;
-
-
+function shuffleDeck () {
+  var unshuffledDeck = createDeck();
+  var shuffledDeck = [];
+  var counter = unshuffledDeck.length;
+  $.each(unshuffledDeck, function (index, value) {
+    var insertedIntoArray = false;
+    while (!insertedIntoArray) {
+      var randomNumber = Math.floor(Math.random() * counter);
+      if (typeof(shuffledDeck[randomNumber]) == "undefined") {
+        shuffledDeck[randomNumber] = value;
+        insertedIntoArray = true;
+      }
+    }
+  });
+  return shuffledDeck;
 }
+
+
 //deck & hand are arrays of objects ^
 //**function to generate deck
 //function to shuffle cards
