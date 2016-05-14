@@ -28,10 +28,36 @@ function shuffleDeck () {
   return shuffledDeck;
 }
 
+function deal(deck) {
+  playerHand.push(deck.pop());
+  playerHand.push(deck.pop());
+  dealerHand.push(deck.pop());
+  dealerHand.push(deck.pop());
+}
+
+function countHand(hand) {
+  var handValue = 0;
+  $.each(hand, function (index, value) {
+    if (value.point === "J" || value.point === "Q" || value.point === "K") {
+      handValue += 10;
+    }
+    else if (value.point === "A") {
+      handValue += 11;
+    }
+    else {
+      handValue += Number(value.point);
+    }
+  });
+  return handValue;
+}
+var playerHand = [];
+var dealerHand = [];
+var thisDeck = shuffleDeck();
+deal(thisDeck);
 
 //deck & hand are arrays of objects ^
 //**function to generate deck
-//function to shuffle cards
+//**function to shuffle cards
 //function count points in hand
 //function to compare dealer hand vs player hand
 //function to deal: array.pop to deal
