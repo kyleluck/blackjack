@@ -70,8 +70,21 @@ function comparePlayerToDealer(playerHand, dealerHand) {
 var playerHand = [];
 var dealerHand = [];
 var thisDeck = shuffleDeck();
-deal(thisDeck);
+//deal(thisDeck);
 
+$(function () {
+  $('#deal').click(function() {
+    deal(thisDeck);
+    var htmlFirstCard = '<div class="col col-md-2"><div class="card suit' +
+                        playerHand[0].suit + '"><p>' + playerHand[0].point +
+                        '</p></div></div>';
+    var htmlSecondCard = '<div class="col col-md-2"><div class="card suit' +
+                        playerHand[1].suit + '"><p>' + playerHand[1].point +
+                        '</p></div></div>';
+
+    $('#playerhand').html(htmlFirstCard + htmlSecondCard);
+  });
+});
 //deck & hand are arrays of objects ^
 //**function to generate deck
 //**function to shuffle cards
