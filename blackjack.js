@@ -50,6 +50,23 @@ function countHand(hand) {
   });
   return handValue;
 }
+
+function comparePlayerToDealer(playerHand, dealerHand) {
+  var playerTotal = countHand(playerHand);
+  var dealerTotal = countHand(dealerHand);
+  if (playerTotal > 21) {
+    console.log('You busted');
+  }
+  else if (dealerTotal > 21) {
+    console.log('You WIN! Dealer busted');
+  }
+  else if (playerTotal > dealerTotal) {
+    console.log('You WIN!');
+  }
+  else {
+    console.log('Dealer wins');
+  }
+}
 var playerHand = [];
 var dealerHand = [];
 var thisDeck = shuffleDeck();
@@ -58,9 +75,9 @@ deal(thisDeck);
 //deck & hand are arrays of objects ^
 //**function to generate deck
 //**function to shuffle cards
-//function count points in hand
-//function to compare dealer hand vs player hand
-//function to deal: array.pop to deal
+//**function count points in hand
+//**function to compare dealer hand vs player hand
+//**function to deal: array.pop to deal
 //function to clear table (on deal)
 //remember ace is 1 or 11
 //player blackjack automatically wins
