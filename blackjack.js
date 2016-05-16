@@ -14,7 +14,7 @@ function createDeck () {
 }
 
 /*
-shuffles the deck by choosing a random number between 1 & 52
+shuffles the deck by choosing a random number between 1 & 312
 and inserting into a new array at that index
 */
 function shuffleDeck () {
@@ -87,7 +87,12 @@ function accountForAces(numberOfAces, handValue) {
 function comparePlayerToDealer(playerHand, dealerHand) {
   var playerTotal = countHand(playerHand);
   var dealerTotal = countHand(dealerHand);
-  $('#dealermessage').html(': ' + dealerTotal);
+
+  //don't show dealer total unless it's dealer's turn (turn === false)
+  if (!turn) {
+    $('#dealermessage').html(': ' + dealerTotal);
+  }
+  
   $('#playermessage').html(': ' + playerTotal);
 
   if (playerTotal === 21) {
@@ -126,18 +131,30 @@ function comparePlayerToDealer(playerHand, dealerHand) {
 //the function giveCards displays the first two cards in the
 //playerHand and dealerHand arrays
 function giveCards(hand, div) {
+  if (div === 'dealerhand') {
+    var htmlSecondCard = '<div class="col col-md-2"><div class="dealerhide card suit' +
+                        hand[1].suit + '"><p>' + hand[1].point +
+                        '</p></div></div>';
+  }
+  else {
+    var htmlSecondCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
+                        hand[1].suit + '"><p>' + hand[1].point +
+                        '</p></div></div>';
+  }
   var htmlFirstCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
                       hand[0].suit + '"><p>' + hand[0].point +
                       '</p></div></div>';
-  var htmlSecondCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
-                      hand[1].suit + '"><p>' + hand[1].point +
-                      '</p></div></div>';
+
 
   $('#' + div).html(htmlFirstCard + htmlSecondCard);
+  $('.dealerhide').hide();
 }
 
 //logic for dealer's turn
 function dealersTurn() {
+  //show dealer card
+  $('.dealerhide').show();
+
   //get hand totals
   var playerTotal = countHand(playerHand);
   var dealerTotal = countHand(dealerHand);
