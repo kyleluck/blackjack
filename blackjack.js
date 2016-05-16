@@ -87,8 +87,8 @@ function comparePlayerToDealer(playerHand, dealerHand) {
     $('#dealermessage').append(' You WIN! Dealer busted');
     return false;
   }
-  else if (dealerTotal === playerTotal && !turn && dealerTotal >= 18) {
-    $('#dealermessage').append(' Draw!');
+  else if (dealerTotal === playerTotal && !turn && dealerTotal >= 17) {
+    $('#dealermessage').append(' Push!');
     return false;
   }
   else if (dealerTotal > playerTotal && !turn) {
@@ -119,15 +119,21 @@ function dealersTurn() {
   var playerTotal = countHand(playerHand);
   var dealerTotal = countHand(dealerHand);
 
-  //if no winner, hit until dealer wins or busts
+  //if no winner, hit until dealer wins or busts.
+  //dealer shouldn't hit on 17
   var continueGame = true;
-  while (continueGame) {
-    if (playerTotal < dealerTotal) {
-      $('#dealermessage').append(' Dealer WINS!');
-      continueGame = false;
-    }
-    else {
-       continueGame = hit(dealerHand);
+  if (dealerTotal >= 17) {
+    continueGame = comparePlayerToDealer(playerHand, dealerHand);
+  }
+  else {
+    while (continueGame) {
+      if (dealerTotal > playerTotal) {
+        $('#dealermessage').append(' Dealer WINS!');
+        continueGame = false;
+      }
+      else {
+         continueGame = hit(dealerHand);
+      }
     }
   }
 }
@@ -139,7 +145,7 @@ function hit(playerOrDealerHand) {
                   playerOrDealerHand[lastCardIndex].suit + '"><p>' + playerOrDealerHand[lastCardIndex].point +
                   '</p></div></div>';
 
-  if (turn === true) {
+  if (turn) {
     //players turn
     $('#playerhand').append(htmlCard);
   }
@@ -174,10 +180,6 @@ $(function () {
   disableButtons(true);
 
   $('#deal').click(function() {
-
-    //the deal function simply works with the three
-    //arrays of objects: playerHand, dealerHand, and
-    //thisDeck.
     deal(thisDeck);
     turn = true;
     disableButtons(false);
@@ -201,10 +203,10 @@ $(function () {
     disableButtons(true);
     dealersTurn();
   });
+
 });
 
 /*
-  gameOver function - disable hit/stand buttons
   A can be 1 or 11
   extract relevant functions / variables
 */
