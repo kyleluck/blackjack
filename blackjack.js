@@ -145,6 +145,9 @@ var turn = true;
 
 $(function () {
 
+  $('#hit').prop('disabled', true);
+  $('#stand').prop('disabled', true);
+
   $('#deal').click(function() {
 
     //the deal function simply works with the three
@@ -152,6 +155,8 @@ $(function () {
     //thisDeck.
     deal(thisDeck);
     turn = true;
+    $('#hit').prop('disabled', false);
+    $('#stand').prop('disabled', false);
     giveCards(playerHand, "playerhand");
     giveCards(dealerHand, "dealerhand");
     comparePlayerToDealer(playerHand, dealerHand);
@@ -169,6 +174,8 @@ $(function () {
 
   $('#stand').click(function() {
     turn = false;
+    $('#hit').prop('disabled', true);
+    $('#stand').prop('disabled', true);
     dealersTurn();
   });
 });
