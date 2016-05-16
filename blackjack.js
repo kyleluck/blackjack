@@ -112,7 +112,7 @@ function comparePlayerToDealer(playerHand, dealerHand) {
     $('#dealermessage').append(' Dealer WINS!');
     return false;
   }
-  else if (playerTotal > dealerTotal && !turn) {
+  else if (playerTotal > dealerTotal && !turn && dealerTotal >= 17) {
     $('#playermessage').append(' You WIN!');
     return false;
   }
