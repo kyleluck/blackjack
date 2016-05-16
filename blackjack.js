@@ -124,10 +124,10 @@ function comparePlayerToDealer(playerHand, dealerHand) {
 //the function giveCards displays the first two cards in the
 //playerHand and dealerHand arrays
 function giveCards(hand, div) {
-  var htmlFirstCard = '<div class="col col-md-2"><div class="card suit' +
+  var htmlFirstCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
                       hand[0].suit + '"><p>' + hand[0].point +
                       '</p></div></div>';
-  var htmlSecondCard = '<div class="col col-md-2"><div class="card suit' +
+  var htmlSecondCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
                       hand[1].suit + '"><p>' + hand[1].point +
                       '</p></div></div>';
 
@@ -162,7 +162,7 @@ function dealersTurn() {
 function hit(playerOrDealerHand) {
   playerOrDealerHand.push(thisDeck.pop());
   var lastCardIndex = playerOrDealerHand.length - 1;
-  var htmlCard = '<div class="col col-md-2"><div class="card suit' +
+  var htmlCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
                   playerOrDealerHand[lastCardIndex].suit + '"><p>' + playerOrDealerHand[lastCardIndex].point +
                   '</p></div></div>';
 

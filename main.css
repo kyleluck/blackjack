@@ -126,3 +126,14 @@ div[class*='suit']:after {
   margin-top: 20px;
   height: 220px;
 }
+
+@keyframes dealanimation {
+  from {left: 1500px;}
+  to {left: 25px;}
+}
+.animatefinal {
+  animation-name: dealanimation;
+  animation-duration: .2s;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+}
