@@ -127,16 +127,29 @@ function dealersTurn() {
       continueGame = false;
     }
     else {
-      dealerHand.push(thisDeck.pop());
-      var lastCardIndex = dealerHand.length - 1;
-      var htmlCard = '<div class="col col-md-2"><div class="card suit' +
-                      dealerHand[lastCardIndex].suit + '"><p>' + dealerHand[lastCardIndex].point +
-                      '</p></div></div>';
-      $('#dealerhand').append(htmlCard);
-      continueGame = comparePlayerToDealer(playerHand, dealerHand);
-
+       continueGame = hit(dealerHand);
     }
   }
+}
+
+function hit(playerOrDealerHand) {
+  playerOrDealerHand.push(thisDeck.pop());
+  var lastCardIndex = playerOrDealerHand.length - 1;
+  var htmlCard = '<div class="col col-md-2"><div class="card suit' +
+                  playerOrDealerHand[lastCardIndex].suit + '"><p>' + playerOrDealerHand[lastCardIndex].point +
+                  '</p></div></div>';
+
+  if (turn === true) {
+    //players turn
+    $('#playerhand').append(htmlCard);
+  }
+  else {
+    //dealers turn
+    $('#dealerhand').append(htmlCard);
+  }
+
+  var continueGame = comparePlayerToDealer(playerHand, dealerHand);
+  return continueGame;
 }
 
 //arrays of objects for each player and dealer hand
@@ -174,13 +187,7 @@ $(function () {
   });
 
   $('#hit').click(function() {
-    playerHand.push(thisDeck.pop());
-    var lastCardIndex = playerHand.length - 1;
-    var htmlCard = '<div class="col col-md-2"><div class="card suit' +
-                    playerHand[lastCardIndex].suit + '"><p>' + playerHand[lastCardIndex].point +
-                    '</p></div></div>';
-    $('#playerhand').append(htmlCard);
-    var continueGame = comparePlayerToDealer(playerHand, dealerHand);
+    var continueGame = hit(playerHand);
     if (!continueGame) {
       $('#hit').prop('disabled', true);
       $('#stand').prop('disabled', true);
@@ -205,7 +212,7 @@ $(function () {
 //player blackjack automatically wins
 /*
   todo:
-  create function for hit - either player or dealer
+  **create function for hit - either player or dealer
   gameOver function - disable hit/stand buttons
   deal needs to redo deck
   A can be 1 or 11
