@@ -54,6 +54,9 @@ function countHand(hand) {
 function comparePlayerToDealer(playerHand, dealerHand) {
   var playerTotal = countHand(playerHand);
   var dealerTotal = countHand(dealerHand);
+  $('#dealermessage').append(': ' + dealerTotal);
+  $('#playermessage').append(': ' + playerTotal);
+
   if (playerTotal === 21) {
     console.log('Blackjack!');
   }
