@@ -1,4 +1,4 @@
-
+//creates a 52 cards deck, unshuffled
 function createDeck () {
   var fullDeck = [];
   var cards2toAce = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
@@ -11,6 +11,8 @@ function createDeck () {
   return fullDeck;
 }
 
+//shuffles the deck by choosing a random number between 1 & 52
+//and inserting into a new array at that index
 function shuffleDeck () {
   var unshuffledDeck = createDeck();
   var shuffledDeck = [];
@@ -54,8 +56,8 @@ function countHand(hand) {
 function comparePlayerToDealer(playerHand, dealerHand) {
   var playerTotal = countHand(playerHand);
   var dealerTotal = countHand(dealerHand);
-  $('#dealermessage').append(': ' + dealerTotal);
-  $('#playermessage').append(': ' + playerTotal);
+  $('#dealermessage').html(': ' + dealerTotal);
+  $('#playermessage').html(': ' + playerTotal);
 
   if (playerTotal === 21) {
     console.log('Blackjack!');
@@ -77,6 +79,8 @@ function comparePlayerToDealer(playerHand, dealerHand) {
   }
 }
 
+//the function giveCards displays the first two cards in the
+//playerHand and dealerHand arrays
 function giveCards(hand, div) {
   var htmlFirstCard = '<div class="col col-md-2"><div class="card suit' +
                       hand[0].suit + '"><p>' + hand[0].point +
@@ -88,15 +92,33 @@ function giveCards(hand, div) {
   $('#' + div).html(htmlFirstCard + htmlSecondCard);
 }
 
+//arrays of objects for each player and dealer hand
 var playerHand = [];
 var dealerHand = [];
+
+//thisDeck is the current deck in play. it is a shuffled deck
 var thisDeck = shuffleDeck();
+
+//the deal function simply works with the three
+//arrays of objects: playerHand, dealerHand, and
+//thisDeck.
+deal(thisDeck);
+
 
 $(function () {
   $('#deal').click(function() {
-    deal(thisDeck);
     giveCards(playerHand, "playerhand");
     giveCards(dealerHand, "dealerhand");
+    comparePlayerToDealer(playerHand, dealerHand);
+  });
+
+  $('#hit').click(function() {
+    playerHand.push(thisDeck.pop());
+    var lastCardIndex = playerHand.length - 1;
+    var htmlCard = '<div class="col col-md-2"><div class="card suit' +
+                    playerHand[lastCardIndex].suit + '"><p>' + playerHand[lastCardIndex].point +
+                    '</p></div></div>';
+    $('#playerhand').append(htmlCard);
     comparePlayerToDealer(playerHand, dealerHand);
   });
 });
