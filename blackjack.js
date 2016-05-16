@@ -31,6 +31,12 @@ function shuffleDeck () {
 }
 
 function deal(deck) {
+  playerHand = [];
+  dealerHand = [];
+  if (deck.length <= 15) {
+    thisDeck = shuffleDeck();
+    deck = thisDeck;
+  }
   playerHand.push(deck.pop());
   playerHand.push(deck.pop());
   dealerHand.push(deck.pop());
@@ -75,6 +81,9 @@ function comparePlayerToDealer(playerHand, dealerHand) {
     $('#dealermessage').append(' You WIN! Dealer busted');
     return false;
   }
+  else if (dealerTotal === playerTotal && !turn && dealerTotal >= 18) {
+    $('#dealermessage').append(' Draw!');
+  }
   else if (dealerTotal > playerTotal && !turn) {
     $('#dealermessage').append(' Dealer WINS!');
     return false;
@@ -82,14 +91,6 @@ function comparePlayerToDealer(playerHand, dealerHand) {
   else {
     return true;
   }
-  // else if (playerTotal > dealerTotal) {
-  //   //CHANGE THIS IN THE FUTURE
-  //   console.log(' You WIN!');
-  // }
-  // else {
-  //   //CHANGE THIS IN THE FUTURE
-  //   console.log(' Dealer wins');
-  // }
 }
 
 //the function giveCards displays the first two cards in the
@@ -114,14 +115,20 @@ function dealersTurn() {
   //if no winner, hit until dealer wins or busts
   var continueGame = true;
   while (continueGame) {
-    //debugger
-    dealerHand.push(thisDeck.pop());
-    var lastCardIndex = dealerHand.length - 1;
-    var htmlCard = '<div class="col col-md-2"><div class="card suit' +
-                    dealerHand[lastCardIndex].suit + '"><p>' + dealerHand[lastCardIndex].point +
-                    '</p></div></div>';
-    $('#dealerhand').append(htmlCard);
-    continueGame = comparePlayerToDealer(playerHand, dealerHand);
+    if (playerTotal < dealerTotal) {
+      $('#dealermessage').append(' Dealer WINS!');
+      continueGame = false;
+    }
+    else {
+      dealerHand.push(thisDeck.pop());
+      var lastCardIndex = dealerHand.length - 1;
+      var htmlCard = '<div class="col col-md-2"><div class="card suit' +
+                      dealerHand[lastCardIndex].suit + '"><p>' + dealerHand[lastCardIndex].point +
+                      '</p></div></div>';
+      $('#dealerhand').append(htmlCard);
+      continueGame = comparePlayerToDealer(playerHand, dealerHand);
+
+    }
   }
 }
 
@@ -132,17 +139,19 @@ var dealerHand = [];
 //thisDeck is the current deck in play. it is a shuffled deck
 var thisDeck = shuffleDeck();
 
-//the deal function simply works with the three
-//arrays of objects: playerHand, dealerHand, and
-//thisDeck.
-deal(thisDeck);
-
 //variable to determine if still player's
 //turn or if dealers turn. true = players turn
 var turn = true;
 
 $(function () {
+
   $('#deal').click(function() {
+
+    //the deal function simply works with the three
+    //arrays of objects: playerHand, dealerHand, and
+    //thisDeck.
+    deal(thisDeck);
+    turn = true;
     giveCards(playerHand, "playerhand");
     giveCards(dealerHand, "dealerhand");
     comparePlayerToDealer(playerHand, dealerHand);
@@ -178,4 +187,6 @@ $(function () {
   gameOver function - disable hit/stand buttons
   deal needs to redo deck
   A can be 1 or 11
+  disable hit or stand buttons if dealers turn
+  board layout before deal
 */
