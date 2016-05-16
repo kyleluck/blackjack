@@ -51,17 +51,26 @@ function deal(deck) {
 //calculates value of a hand (array of cards) and returns the hand's value
 function countHand(hand) {
   var handValue = 0;
+  var hasAce = false;
   $.each(hand, function (index, value) {
     if (value.point === "J" || value.point === "Q" || value.point === "K") {
       handValue += 10;
     }
     else if (value.point === "A") {
       handValue += 11;
+      hasAce = true;
     }
     else {
       handValue += Number(value.point);
     }
   });
+
+  //if the hand contains an Ace, use higher value that doesn't result in a bust
+  if (hasAce) {
+    if (handValue > 21) {
+      handValue = handValue - 10;
+    }
+  }
   return handValue;
 }
 
@@ -205,8 +214,3 @@ $(function () {
   });
 
 });
-
-/*
-  A can be 1 or 11
-  extract relevant functions / variables
-*/
