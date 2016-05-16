@@ -60,22 +60,24 @@ function comparePlayerToDealer(playerHand, dealerHand) {
   $('#playermessage').html(': ' + playerTotal);
 
   if (playerTotal === 21) {
-    console.log('Blackjack!');
+    $('#playermessage').append(' Blackjack!');
   }
   else if (dealerTotal === 21) {
-    console.log('Dealer Blackjack! - You lose.');
+    $('#dealermessage').append(' Dealer Blackjack! - You lose!');
   }
   else if (playerTotal > 21) {
-    console.log('You busted');
+    $('#playermessage').append(' You busted!');
   }
   else if (dealerTotal > 21) {
-    console.log('You WIN! Dealer busted');
+    $('#dealermessage').append(' You WIN! Dealer busted');
   }
   else if (playerTotal > dealerTotal) {
-    console.log('You WIN!');
+    //CHANGE THIS IN THE FUTURE
+    console.log(' You WIN!');
   }
   else {
-    console.log('Dealer wins');
+    //CHANGE THIS IN THE FUTURE
+    console.log(' Dealer wins');
   }
 }
 
