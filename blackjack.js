@@ -51,14 +51,14 @@ function deal(deck) {
 //calculates value of a hand (array of cards) and returns the hand's value
 function countHand(hand) {
   var handValue = 0;
-  var hasAce = false;
+  var numberOfAces = 0;
   $.each(hand, function (index, value) {
     if (value.point === "J" || value.point === "Q" || value.point === "K") {
       handValue += 10;
     }
     else if (value.point === "A") {
       handValue += 11;
-      hasAce = true;
+      numberOfAces++;
     }
     else {
       handValue += Number(value.point);
@@ -66,9 +66,17 @@ function countHand(hand) {
   });
 
   //if the hand contains an Ace, use higher value that doesn't result in a bust
-  if (hasAce) {
-    if (handValue > 21) {
-      handValue = handValue - 10;
+  if (numberOfAces > 0 && handValue > 21) {
+    handValue = accountForAces(numberOfAces, handValue);
+  }
+  return handValue;
+}
+
+function accountForAces(numberOfAces, handValue) {
+  for (var i = 1; i <= numberOfAces; i++) {
+    handValue -= 10;
+    if (handValue < 21) {
+      return handValue;
     }
   }
   return handValue;
@@ -102,6 +110,10 @@ function comparePlayerToDealer(playerHand, dealerHand) {
   }
   else if (dealerTotal > playerTotal && !turn) {
     $('#dealermessage').append(' Dealer WINS!');
+    return false;
+  }
+  else if (playerTotal > dealerTotal && !turn) {
+    $('#playermessage').append(' You WIN!');
     return false;
   }
   else {
