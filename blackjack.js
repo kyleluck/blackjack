@@ -92,7 +92,9 @@ function comparePlayerToDealer(playerHand, dealerHand) {
   if (!turn) {
     $('#dealermessage').html(': ' + dealerTotal);
   }
-  
+  else {
+    $('#dealermessage').html(':');
+  }
   $('#playermessage').html(': ' + playerTotal);
 
   if (playerTotal === 21) {
@@ -132,9 +134,7 @@ function comparePlayerToDealer(playerHand, dealerHand) {
 //playerHand and dealerHand arrays
 function giveCards(hand, div) {
   if (div === 'dealerhand') {
-    var htmlSecondCard = '<div class="col col-md-2"><div class="dealerhide card suit' +
-                        hand[1].suit + '"><p>' + hand[1].point +
-                        '</p></div></div>';
+    var htmlSecondCard = '<div class="col col-md-2" id="dealerholecard"><div class="animatefinal card cardback suitback deckcard"><p>Kyle Luck</p></div></div>';
   }
   else {
     var htmlSecondCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
@@ -147,13 +147,14 @@ function giveCards(hand, div) {
 
 
   $('#' + div).html(htmlFirstCard + htmlSecondCard);
-  $('.dealerhide').hide();
 }
 
 //logic for dealer's turn
 function dealersTurn() {
   //show dealer card
-  $('.dealerhide').show();
+  $('#dealerholecard').html('<div class="col col-md-2"><div class="card suit' +
+                      dealerHand[1].suit + '"><p>' + dealerHand[1].point +
+                      '</p></div></div>').removeClass
 
   //get hand totals
   var playerTotal = countHand(playerHand);
