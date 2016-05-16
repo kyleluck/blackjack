@@ -11,8 +11,10 @@ function createDeck () {
   return fullDeck;
 }
 
-//shuffles the deck by choosing a random number between 1 & 52
-//and inserting into a new array at that index
+/*
+shuffles the deck by choosing a random number between 1 & 52
+and inserting into a new array at that index
+*/
 function shuffleDeck () {
   var unshuffledDeck = createDeck();
   var shuffledDeck = [];
@@ -30,6 +32,9 @@ function shuffleDeck () {
   return shuffledDeck;
 }
 
+/*
+give dealer and player 2 cards; get new shuffled deck if needed
+*/
 function deal(deck) {
   playerHand = [];
   dealerHand = [];
@@ -43,6 +48,7 @@ function deal(deck) {
   dealerHand.push(deck.pop());
 }
 
+//calculates value of a hand (array of cards) and returns the hand's value
 function countHand(hand) {
   var handValue = 0;
   $.each(hand, function (index, value) {
@@ -83,6 +89,7 @@ function comparePlayerToDealer(playerHand, dealerHand) {
   }
   else if (dealerTotal === playerTotal && !turn && dealerTotal >= 18) {
     $('#dealermessage').append(' Draw!');
+    return false;
   }
   else if (dealerTotal > playerTotal && !turn) {
     $('#dealermessage').append(' Dealer WINS!');
@@ -159,7 +166,11 @@ $(function () {
     $('#stand').prop('disabled', false);
     giveCards(playerHand, "playerhand");
     giveCards(dealerHand, "dealerhand");
-    comparePlayerToDealer(playerHand, dealerHand);
+    var continueGame = comparePlayerToDealer(playerHand, dealerHand);
+    if (!continueGame) {
+      $('#hit').prop('disabled', true);
+      $('#stand').prop('disabled', true);
+    }
   });
 
   $('#hit').click(function() {
@@ -169,7 +180,11 @@ $(function () {
                     playerHand[lastCardIndex].suit + '"><p>' + playerHand[lastCardIndex].point +
                     '</p></div></div>';
     $('#playerhand').append(htmlCard);
-    comparePlayerToDealer(playerHand, dealerHand);
+    var continueGame = comparePlayerToDealer(playerHand, dealerHand);
+    if (!continueGame) {
+      $('#hit').prop('disabled', true);
+      $('#stand').prop('disabled', true);
+    }
   });
 
   $('#stand').click(function() {
@@ -196,4 +211,5 @@ $(function () {
   A can be 1 or 11
   disable hit or stand buttons if dealers turn
   board layout before deal
+  extract relevant functions / variables
 */
