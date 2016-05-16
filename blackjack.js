@@ -152,6 +152,12 @@ function hit(playerOrDealerHand) {
   return continueGame;
 }
 
+function disableButtons(trueOrFalse) {
+  $('#hit').prop('disabled', trueOrFalse);
+  $('#stand').prop('disabled', trueOrFalse);
+}
+
+
 //arrays of objects for each player and dealer hand
 var playerHand = [];
 var dealerHand = [];
@@ -165,8 +171,7 @@ var turn = true;
 
 $(function () {
 
-  $('#hit').prop('disabled', true);
-  $('#stand').prop('disabled', true);
+  disableButtons(true);
 
   $('#deal').click(function() {
 
@@ -175,48 +180,31 @@ $(function () {
     //thisDeck.
     deal(thisDeck);
     turn = true;
-    $('#hit').prop('disabled', false);
-    $('#stand').prop('disabled', false);
+    disableButtons(false);
     giveCards(playerHand, "playerhand");
     giveCards(dealerHand, "dealerhand");
     var continueGame = comparePlayerToDealer(playerHand, dealerHand);
     if (!continueGame) {
-      $('#hit').prop('disabled', true);
-      $('#stand').prop('disabled', true);
+      disableButtons(true);
     }
   });
 
   $('#hit').click(function() {
     var continueGame = hit(playerHand);
     if (!continueGame) {
-      $('#hit').prop('disabled', true);
-      $('#stand').prop('disabled', true);
+      disableButtons(true);
     }
   });
 
   $('#stand').click(function() {
     turn = false;
-    $('#hit').prop('disabled', true);
-    $('#stand').prop('disabled', true);
+    disableButtons(true);
     dealersTurn();
   });
 });
-//deck & hand are arrays of objects ^
-//**function to generate deck
-//**function to shuffle cards
-//**function count points in hand
-//**function to compare dealer hand vs player hand
-//**function to deal: array.pop to deal
-//function to clear table (on deal)
-//remember ace is 1 or 11
-//player blackjack automatically wins
+
 /*
-  todo:
-  **create function for hit - either player or dealer
   gameOver function - disable hit/stand buttons
-  deal needs to redo deck
   A can be 1 or 11
-  disable hit or stand buttons if dealers turn
-  board layout before deal
   extract relevant functions / variables
 */
