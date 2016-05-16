@@ -54,7 +54,13 @@ function countHand(hand) {
 function comparePlayerToDealer(playerHand, dealerHand) {
   var playerTotal = countHand(playerHand);
   var dealerTotal = countHand(dealerHand);
-  if (playerTotal > 21) {
+  if (playerTotal === 21) {
+    console.log('Blackjack!');
+  }
+  else if (dealerTotal === 21) {
+    console.log('Dealer Blackjack! - You lose.');
+  }
+  else if (playerTotal > 21) {
     console.log('You busted');
   }
   else if (dealerTotal > 21) {
@@ -67,22 +73,28 @@ function comparePlayerToDealer(playerHand, dealerHand) {
     console.log('Dealer wins');
   }
 }
+
+function giveCards(hand, div) {
+  var htmlFirstCard = '<div class="col col-md-2"><div class="card suit' +
+                      hand[0].suit + '"><p>' + hand[0].point +
+                      '</p></div></div>';
+  var htmlSecondCard = '<div class="col col-md-2"><div class="card suit' +
+                      hand[1].suit + '"><p>' + hand[1].point +
+                      '</p></div></div>';
+
+  $('#' + div).html(htmlFirstCard + htmlSecondCard);
+}
+
 var playerHand = [];
 var dealerHand = [];
 var thisDeck = shuffleDeck();
-//deal(thisDeck);
 
 $(function () {
   $('#deal').click(function() {
     deal(thisDeck);
-    var htmlFirstCard = '<div class="col col-md-2"><div class="card suit' +
-                        playerHand[0].suit + '"><p>' + playerHand[0].point +
-                        '</p></div></div>';
-    var htmlSecondCard = '<div class="col col-md-2"><div class="card suit' +
-                        playerHand[1].suit + '"><p>' + playerHand[1].point +
-                        '</p></div></div>';
-
-    $('#playerhand').html(htmlFirstCard + htmlSecondCard);
+    giveCards(playerHand, "playerhand");
+    giveCards(dealerHand, "dealerhand");
+    comparePlayerToDealer(playerHand, dealerHand);
   });
 });
 //deck & hand are arrays of objects ^
