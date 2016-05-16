@@ -1,13 +1,15 @@
-//creates a 52 cards deck, unshuffled
+//creates a deck with six deck of cards (312 cards), unshuffled
 function createDeck () {
   var fullDeck = [];
   var cards2toAce = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
   var suits = ['diamonds', 'spades', 'hearts', 'clubs'];
-  $.each(suits, function( indexSuits, valueSuits ) {
-    $.each(cards2toAce, function( indexCards, valueCards ) {
-      fullDeck.push({suit: suits[indexSuits], point: cards2toAce[indexCards]});
+  for (var i = 0; i < 6; i++) {
+    $.each(suits, function( indexSuits, valueSuits ) {
+      $.each(cards2toAce, function( indexCards, valueCards ) {
+        fullDeck.push({suit: suits[indexSuits], point: cards2toAce[indexCards]});
+      });
     });
-  });
+  }
   return fullDeck;
 }
 
