@@ -61,24 +61,35 @@ function comparePlayerToDealer(playerHand, dealerHand) {
 
   if (playerTotal === 21) {
     $('#playermessage').append(' Blackjack!');
+    return false;
   }
   else if (dealerTotal === 21) {
     $('#dealermessage').append(' Dealer Blackjack! - You lose!');
+    return false;
   }
   else if (playerTotal > 21) {
     $('#playermessage').append(' You busted!');
+    return false;
   }
   else if (dealerTotal > 21) {
     $('#dealermessage').append(' You WIN! Dealer busted');
+    return false;
   }
-  else if (playerTotal > dealerTotal) {
-    //CHANGE THIS IN THE FUTURE
-    console.log(' You WIN!');
+  else if (dealerTotal > playerTotal && !turn) {
+    $('#dealermessage').append(' Dealer WINS!');
+    return false;
   }
   else {
-    //CHANGE THIS IN THE FUTURE
-    console.log(' Dealer wins');
+    return true;
   }
+  // else if (playerTotal > dealerTotal) {
+  //   //CHANGE THIS IN THE FUTURE
+  //   console.log(' You WIN!');
+  // }
+  // else {
+  //   //CHANGE THIS IN THE FUTURE
+  //   console.log(' Dealer wins');
+  // }
 }
 
 //the function giveCards displays the first two cards in the
@@ -92,6 +103,26 @@ function giveCards(hand, div) {
                       '</p></div></div>';
 
   $('#' + div).html(htmlFirstCard + htmlSecondCard);
+}
+
+//logic for dealer's turn
+function dealersTurn() {
+  //get hand totals
+  var playerTotal = countHand(playerHand);
+  var dealerTotal = countHand(dealerHand);
+
+  //if no winner, hit until dealer wins or busts
+  var continueGame = true;
+  while (continueGame) {
+    //debugger
+    dealerHand.push(thisDeck.pop());
+    var lastCardIndex = dealerHand.length - 1;
+    var htmlCard = '<div class="col col-md-2"><div class="card suit' +
+                    dealerHand[lastCardIndex].suit + '"><p>' + dealerHand[lastCardIndex].point +
+                    '</p></div></div>';
+    $('#dealerhand').append(htmlCard);
+    continueGame = comparePlayerToDealer(playerHand, dealerHand);
+  }
 }
 
 //arrays of objects for each player and dealer hand
@@ -129,6 +160,7 @@ $(function () {
 
   $('#stand').click(function() {
     turn = false;
+    dealersTurn();
   });
 });
 //deck & hand are arrays of objects ^
@@ -140,3 +172,10 @@ $(function () {
 //function to clear table (on deal)
 //remember ace is 1 or 11
 //player blackjack automatically wins
+/*
+  todo:
+  create function for hit - either player or dealer
+  gameOver function - disable hit/stand buttons
+  deal needs to redo deck
+  A can be 1 or 11
+*/
