@@ -152,9 +152,9 @@ function giveCards(hand, div) {
 //logic for dealer's turn
 function dealersTurn() {
   //show dealer card
-  $('#dealerholecard').html('<div class="col col-md-2"><div class="card suit' +
+  $('#dealerholecard').html('<div class="animated flipInX card suit' +
                       dealerHand[1].suit + '"><p>' + dealerHand[1].point +
-                      '</p></div></div>').removeClass
+                      '</p></div>');
 
   //get hand totals
   var playerTotal = countHand(playerHand);
