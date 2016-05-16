@@ -134,7 +134,7 @@ function comparePlayerToDealer(playerHand, dealerHand) {
 //playerHand and dealerHand arrays
 function giveCards(hand, div) {
   if (div === 'dealerhand') {
-    var htmlSecondCard = '<div class="col col-md-2" id="dealerholecard"><div class="animatefinal card cardback suitback deckcard"><p>Kyle Luck</p></div></div>';
+    var htmlSecondCard = '<div class="col col-md-2" id="dealerholecard"><div class="animatefinal card cardback suitback"><p>Kyle Luck</p></div></div>';
   }
   else {
     var htmlSecondCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
