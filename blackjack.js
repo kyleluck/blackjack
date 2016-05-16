@@ -152,7 +152,7 @@ function giveCards(hand, div) {
 //logic for dealer's turn
 function dealersTurn() {
   //show dealer card
-  $('#dealerholecard').html('<div class="animated flipInX card suit' +
+  $('#dealerholecard').html('<div class="animated flipInY card suit' +
                       dealerHand[1].suit + '"><p>' + dealerHand[1].point +
                       '</p></div>');
 
