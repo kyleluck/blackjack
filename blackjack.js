@@ -106,6 +106,9 @@ var thisDeck = shuffleDeck();
 //thisDeck.
 deal(thisDeck);
 
+//variable to determine if still player's
+//turn or if dealers turn. true = players turn
+var turn = true;
 
 $(function () {
   $('#deal').click(function() {
@@ -122,6 +125,10 @@ $(function () {
                     '</p></div></div>';
     $('#playerhand').append(htmlCard);
     comparePlayerToDealer(playerHand, dealerHand);
+  });
+
+  $('#stand').click(function() {
+    turn = false;
   });
 });
 //deck & hand are arrays of objects ^
