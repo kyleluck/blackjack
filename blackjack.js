@@ -258,11 +258,18 @@ $(function () {
 
   $('#betup').click(function() {
     bet += 5;
+    if (bet > bank) {
+      bet -= 5;
+    }
     $('#bet').html("<p> Bet: $" + bet + "</p>");
   });
 
   $('#betdown').click(function() {
-    bet -= 5;
+    if (bet <= 5) {
+      bet = 5;
+    } else {
+      bet -= 5;
+    }
     $('#bet').html("<p> Bet: $" + bet + "</p>");
   });
 
