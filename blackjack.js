@@ -226,7 +226,10 @@ function betting(whoWon) {
   } else if (whoWon === "player") {
     bank += bet;
   }
-  $('#bank').html("<p>$" + bank + "</p>");
+  $('#bank').html("Bank: <p>$" + bank + "</p>");
+  $('#betup').prop('disabled', false);
+  $('#betdown').prop('disabled', false);
+
 }
 
 
@@ -250,9 +253,22 @@ var bet = 5;
 $(function () {
 
   disableButtons(true);
-  $('#bank').html("<p>$" + bank + "</p>");
+  $('#bank').html("<p>Bank: $" + bank + "</p>");
+  $('#bet').html("<p>Bet: $" + bet + "</p>");
+
+  $('#betup').click(function() {
+    bet += 5;
+    $('#bet').html("<p> Bet: $" + bet + "</p>");
+  });
+
+  $('#betdown').click(function() {
+    bet -= 5;
+    $('#bet').html("<p> Bet: $" + bet + "</p>");
+  });
 
   $('#deal').click(function() {
+    $('#betup').prop('disabled', true);
+    $('#betdown').prop('disabled', true);
     deal(thisDeck);
     turn = true;
     disableButtons(false);

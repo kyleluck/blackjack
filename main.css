@@ -3,11 +3,11 @@ body {
   background: url(bg.png);
 }
 
-h2 {
+h2, h3 {
   color: white;
 }
 
-h2, button {
+h2, h3, button {
   font-family: 'Lobster', cursive;
 }
 
@@ -149,4 +149,8 @@ div[class*='suit']:after {
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both;
     left: 25px;
+}
+
+.betting {
+  float: right;
 }

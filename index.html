@@ -23,7 +23,10 @@
         <div class="card cardback suitback deckcard" id="deck2"><p>Kyle Luck</p></div>
         <div class="card cardback suitback deckcard" id="deck3"><p>Kyle Luck</p></div>
       </div>
-      <h2>Player <span id="playermessage"></span><div id="bank"></div></h2>
+      <div class="betting">
+        <h3><span id="bank"></span><span id="bet"></span></h3>
+      </div>
+      <h2>Player <span id="playermessage"></span></h2>
       <div class="row" id="playerhand">
       </div>
       <div class="row">
@@ -32,6 +35,8 @@
             <button type="button" name="button" class="btn btn-default" id="deal">Deal</button>
             <button type="button" name="button" class="btn btn-default" id="hit">Hit</button>
             <button type="button" name="button" class="btn btn-default" id="stand">Stand</button>
+            <button type="button" name="button" class="btn btn-default" id="betup">+ Bet</button>
+            <button type="button" name="button" class="btn btn-default" id="betdown">- Bet</button>
           </div>
         </div>
       </div> <!-- end row -->
