@@ -1,7 +1,18 @@
 
 /* Deck constructor */
-function Deck() {
+function Deck(n) {
   this.cards = [];
+  var cards2toAce = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
+  var suits = ['diamonds', 'spades', 'hearts', 'clubs'];
+  var deckCards = this.cards; //save off context as context will change in jQuery each
+  for (var i = 0; i < n; i++) { //create a deck with n decks of cards
+    $.each(suits, function( indexSuits, valueSuits ) {
+      $.each(cards2toAce, function( indexCards, valueCards ) {
+        var card = new Card(cards2toAce[indexCards], suits[indexSuits]);
+        deckCards.push(card);
+      });
+    });
+  }
 }
 
 /* numCards function returns number of cards */
@@ -12,21 +23,6 @@ Deck.prototype.numCards = function() {
 /* draw function removes last card */
 Deck.prototype.draw = function() {
   return this.cards.pop();
-};
-
-/* createNewDeck function creates a deck with 6 decks */
-Deck.prototype.createNewDeck = function(n) {
-  var cards2toAce = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
-  var suits = ['diamonds', 'spades', 'hearts', 'clubs'];
-  var deckCards = this.cards; //save off context as context will change in jQuery each
-  for (var i = 0; i < n; i++) { //create a deck with 6 decks of cards
-    $.each(suits, function( indexSuits, valueSuits ) {
-      $.each(cards2toAce, function( indexCards, valueCards ) {
-        var card = new Card(cards2toAce[indexCards], suits[indexSuits]);
-        deckCards.push(card);
-      });
-    });
-  }
 };
 
 /* shuffles current deck in deck.cards and returns it */
@@ -130,8 +126,8 @@ CompareHands.prototype.compare = function() {
   return "neither had blackjack";
 };
 
-var deck = new Deck();
-deck.createNewDeck(6); //sets deck.cards to an unshuffledDeck 6 decks
+var deck = new Deck(6); //sets deck.cards to an unshuffledDeck 6 decks
+//deck.createNewDeck(6); //sets deck.cards to an unshuffledDeck 6 decks
 deck.cards = deck.shuffleDeck(); //sets shuffles current deck and assign new deck to deck.cards
 
 /*create player and dealer hands */
