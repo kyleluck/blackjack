@@ -266,6 +266,8 @@ $(function () {
     bet += 5;
     if (bet > bank) {
       bet -= 5;
+    } else if (bet >= 100) {
+      bet = 100;
     }
     $('#bet').html("<p> Bet: $" + bet + "</p>");
   });
@@ -277,6 +279,16 @@ $(function () {
       bet -= 5;
     }
     $('#bet').html("<p> Bet: $" + bet + "</p>");
+  });
+
+  $('#betmax').click(function() {
+      bet = 100;
+      $('#bet').html("<p>Bet: $" + bet + "</p>");
+  });
+
+  $('#betmin').click(function() {
+      bet = 5;
+      $('#bet').html("<p>Bet: $" + bet + "</p>");
   });
 
   $('#deal').click(function() {
