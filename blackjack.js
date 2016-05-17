@@ -226,6 +226,11 @@ function betting(whoWon) {
   } else if (whoWon === "player") {
     bank += bet;
   }
+
+  if (bank <= 0) {
+    $('.alert').html("Sorry, you're out of money! No worries, we'll replenish your bank!").show();
+    bank = 500;
+  }
   $('#bank').html("Bank: <p>$" + bank + "</p>");
   $('#betup').prop('disabled', false);
   $('#betdown').prop('disabled', false);
@@ -253,6 +258,7 @@ var bet = 5;
 $(function () {
 
   disableButtons(true);
+  $('.alert').hide();
   $('#bank').html("<p>Bank: $" + bank + "</p>");
   $('#bet').html("<p>Bet: $" + bet + "</p>");
 
@@ -274,6 +280,7 @@ $(function () {
   });
 
   $('#deal').click(function() {
+    $('.alert').hide();
     $('#betup').prop('disabled', true);
     $('#betdown').prop('disabled', true);
     deal(thisDeck);
