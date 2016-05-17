@@ -99,30 +99,44 @@ function comparePlayerToDealer(playerHand, dealerHand) {
 
   if (playerTotal === 21) {
     $('#playermessage').append(' Blackjack!');
+    whoWon = "player";
+    betting(whoWon);
     return false;
   }
   else if (dealerTotal === 21) {
-    $('#dealermessage').append(' Dealer Blackjack! - You lose!');
+    $('#dealermessage').append(' Blackjack! - You lose!');
+    whoWon = "dealer";
+    betting(whoWon);
     return false;
   }
   else if (playerTotal > 21) {
     $('#playermessage').append(' You busted!');
+    whoWon = "dealer";
+    betting(whoWon);
     return false;
   }
   else if (dealerTotal > 21) {
     $('#dealermessage').append(' You WIN! Dealer busted');
+    whoWon = "player";
+    betting(whoWon);
     return false;
   }
   else if (dealerTotal === playerTotal && !turn && dealerTotal >= 17) {
     $('#dealermessage').append(' Push!');
+    whoWon = "push";
+    betting(whoWon);
     return false;
   }
   else if (dealerTotal > playerTotal && !turn) {
     $('#dealermessage').append(' Dealer WINS!');
+    whoWon = "dealer";
+    betting(whoWon);
     return false;
   }
   else if (playerTotal > dealerTotal && !turn && dealerTotal >= 17) {
     $('#playermessage').append(' You WIN!');
+    whoWon = "player";
+    betting(whoWon);
     return false;
   }
   else {
@@ -204,6 +218,17 @@ function disableButtons(trueOrFalse) {
   $('#stand').prop('disabled', trueOrFalse);
 }
 
+function betting(whoWon) {
+  if (whoWon === "push") {
+    bank = bank;
+  } else if (whoWon === "dealer") {
+    bank -= bet;
+  } else if (whoWon === "player") {
+    bank += bet;
+  }
+  $('#bank').html("<p>$" + bank + "</p>");
+}
+
 
 //arrays of objects for each player and dealer hand
 var playerHand = [];
@@ -216,9 +241,16 @@ var thisDeck = shuffleDeck();
 //turn or if dealers turn. true = players turn
 var turn = true;
 
+//variable to track who won for betting
+var whoWon = "noone";
+//variable for bank amount
+var bank = 500;
+var bet = 5;
+
 $(function () {
 
   disableButtons(true);
+  $('#bank').html("<p>$" + bank + "</p>");
 
   $('#deal').click(function() {
     deal(thisDeck);
