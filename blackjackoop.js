@@ -41,7 +41,7 @@ Deck.prototype.shuffleDeck = function() {
       }
     }
   });
-  return shuffledDeck;
+  this.cards = shuffledDeck; //assign back to unshuffled deck
 };
 
 /* Card constructor */
@@ -104,48 +104,163 @@ Hand.prototype.getPoints = function() {
   return sum;
 };
 
-/* Blackjack game constructor */
-function Blackjack() {
-
+//**************************************************//
+function disableButtons(trueOrFalse) {
+  $('#hit').prop('disabled', trueOrFalse);
+  $('#stand').prop('disabled', trueOrFalse);
 }
 
-/* compare constructor */
-function CompareHands(playerHand, dealerHand) {
-  this.playerHand = playerHand;
-  this.dealerHand = dealerHand;
-}
-
-CompareHands.prototype.compare = function() {
-  playerHandPoints = this.playerHand.getPoints();
-  dealerHandPoints = this.dealerHand.getPoints();
-  if (playerHandPoints === 21) {
-    return "player blackjack";
-  } else if(dealerHandPoints === 21) {
-    return "dealer balckjack";
+//the function giveCards displays the first two cards in the
+//playerHand and dealerHand arrays
+function giveCards(hand, div) {
+  if (div === 'dealerhand') {
+    var htmlSecondCard = '<div class="col col-md-2" id="dealerholecard"><div class="animatefinal card cardback suitback"><p>Kyle Luck</p></div></div>';
   }
-  return "neither had blackjack";
-};
+  else {
+    var htmlSecondCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
+                        hand.cards[1].suit + '"><p>' + hand.cards[1].point +
+                        '</p></div></div>';
+  }
+  var htmlFirstCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
+                      hand.cards[0].suit + '"><p>' + hand.cards[0].point +
+                      '</p></div></div>';
 
-var deck = new Deck(6); //sets deck.cards to an unshuffledDeck 6 decks
-//deck.createNewDeck(6); //sets deck.cards to an unshuffledDeck 6 decks
-deck.cards = deck.shuffleDeck(); //sets shuffles current deck and assign new deck to deck.cards
 
+  $('#' + div).html(htmlFirstCard + htmlSecondCard);
+}
+
+function comparePlayerToDealer(playerHand, dealerHand) {
+  var playerTotal = playerHand.getPoints();
+  var dealerTotal = dealerHand.getPoints();
+
+  //don't show dealer total unless it's dealer's turn (turn === false)
+  if (!turn) {
+    $('#dealermessage').html(': ' + dealerTotal);
+  }
+  else {
+    $('#dealermessage').html(':');
+  }
+  $('#playermessage').html(': ' + playerTotal);
+
+  if (playerTotal === 21) {
+    $('#playermessage').append(' Blackjack!');
+    whoWon = "player";
+    betting(whoWon);
+    return false;
+  }
+  else if (dealerTotal === 21) {
+    $('#dealermessage').append(' Blackjack! - You lose!');
+    whoWon = "dealer";
+    betting(whoWon);
+    return false;
+  }
+  else if (playerTotal > 21) {
+    $('#playermessage').append(' You busted!');
+    whoWon = "dealer";
+    betting(whoWon);
+    return false;
+  }
+  else if (dealerTotal > 21) {
+    $('#dealermessage').append(' You WIN! Dealer busted');
+    whoWon = "player";
+    betting(whoWon);
+    return false;
+  }
+  else if (dealerTotal === playerTotal && !turn && dealerTotal >= 17) {
+    $('#dealermessage').append(' Push!');
+    whoWon = "push";
+    betting(whoWon);
+    return false;
+  }
+  else if (dealerTotal > playerTotal && !turn) {
+    $('#dealermessage').append(' Dealer WINS!');
+    whoWon = "dealer";
+    betting(whoWon);
+    return false;
+  }
+  else if (playerTotal > dealerTotal && !turn && dealerTotal >= 17) {
+    $('#playermessage').append(' You WIN!');
+    whoWon = "player";
+    betting(whoWon);
+    return false;
+  }
+  else {
+    return true;
+  }
+}
+
+function hit(playerOrDealerHand) {
+  playerOrDealerHand.addCard(deck.draw());;
+  var lastCardIndex = playerOrDealerHand.cards.length - 1;
+  var htmlCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
+                  playerOrDealerHand.cards[lastCardIndex].suit + '"><p>' + playerOrDealerHand.cards[lastCardIndex].point +
+                  '</p></div></div>';
+
+  if (turn) {
+    //players turn
+    $('#playerhand').append(htmlCard);
+  }
+  else {
+    //dealers turn
+    $('#dealerhand').append(htmlCard);
+  }
+
+  var continueGame = comparePlayerToDealer(playerHand, dealerHand);
+  return continueGame;
+}
+
+//logic for dealer's turn
+function dealersTurn() {
+  //show dealer card
+  $('#dealerholecard').html('<div class="animated flipInY card suit' +
+                      dealerHand.cards[1].suit + '"><p>' + dealerHand.cards[1].point +
+                      '</p></div>');
+
+  //get hand totals
+  var playerTotal = playerHand.getPoints();
+  var dealerTotal = dealerHand.getPoints();
+
+  //if no winner, hit until dealer wins or busts.
+  //dealer shouldn't hit on 17
+  var continueGame = true;
+  if (dealerTotal >= 17) {
+    continueGame = comparePlayerToDealer(playerHand, dealerHand);
+  }
+  else {
+    while (continueGame) {
+      if (dealerTotal > playerTotal) {
+        $('#dealermessage').append(' Dealer WINS!');
+        continueGame = false;
+      }
+      else {
+         continueGame = hit(dealerHand);
+      }
+    }
+  }
+}
+
+
+function betting(whoWon) {
+  if (whoWon === "push") {
+    bank = bank;
+  } else if (whoWon === "dealer") {
+    bank -= bet;
+  } else if (whoWon === "player") {
+    bank += bet;
+  }
+
+  if (bank <= 0) {
+    $('.alert').html("Sorry, you're out of money! No worries, we'll replenish your bank!").show();
+    bank = 500;
+  }
+  $('#bank').html("Bank: <p>$" + bank + "</p>");
+  $('#betup').prop('disabled', false);
+  $('#betdown').prop('disabled', false);
+
+}
 /*create player and dealer hands */
 var playerHand = new Hand();
 var dealerHand = new Hand();
-
-/*deal initial 4 cards: 2 to dealer and 2 to player*/
-playerHand.addCard(deck.draw());
-playerHand.addCard(deck.draw());
-dealerHand.addCard(deck.draw());
-dealerHand.addCard(deck.draw());
-
-var compareHands = new CompareHands(playerHand, dealerHand);
-console.log(compareHands.compare());
-
-/*just logging hands for testing/visualization*/
-// console.log(playerHand.getPoints());
-// console.log(dealerHand.getPoints());
 
 //variable to determine if still player's
 //turn or if dealers turn. true = players turn
@@ -157,7 +272,10 @@ var whoWon = "noone";
 var bank = 500;
 var bet = 5;
 
-/*
+//create deck and shuffle
+var deck = new Deck(6); //sets deck.cards to an unshuffledDeck 6 decks
+deck.shuffleDeck(); //sets shuffles current deck and assign new deck to deck.cards
+
 $(function () {
 
   disableButtons(true);
@@ -198,7 +316,17 @@ $(function () {
     $('.alert').hide();
     $('#betup').prop('disabled', true);
     $('#betdown').prop('disabled', true);
-    deal(thisDeck);
+
+    //reset hands
+    playerHand.cards = [];
+    dealerHand.cards = [];
+    
+    /*deal initial 4 cards: 2 to dealer and 2 to player*/
+    playerHand.addCard(deck.draw());
+    playerHand.addCard(deck.draw());
+    dealerHand.addCard(deck.draw());
+    dealerHand.addCard(deck.draw());
+
     turn = true;
     disableButtons(false);
     giveCards(playerHand, "playerhand");
@@ -223,4 +351,3 @@ $(function () {
   });
 
 });
-*/
