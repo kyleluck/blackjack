@@ -1,21 +1,21 @@
 
 /* Deck constructor */
-function Deck () {
+function Deck() {
   this.cards = [];
 }
 
 /* numCards function returns number of cards */
-Deck.prototype.numCards = function () {
+Deck.prototype.numCards = function() {
   return this.cards.length;
 };
 
 /* draw function removes last card */
-Deck.prototype.draw = function () {
+Deck.prototype.draw = function() {
   return this.cards.pop();
 };
 
 /* createNewDeck function creates a deck with 6 decks */
-Deck.prototype.createNewDeck = function (n) {
+Deck.prototype.createNewDeck = function(n) {
   var cards2toAce = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
   var suits = ['diamonds', 'spades', 'hearts', 'clubs'];
   var deckCards = this.cards; //save off context as context will change in jQuery each
@@ -35,7 +35,7 @@ Deck.prototype.shuffleDeck = function() {
   var shuffledDeck = [];
   var counter = unshuffledDeck.length;
 
-  $.each(unshuffledDeck, function (index, value) {
+  $.each(unshuffledDeck, function(index, value) {
     var insertedIntoArray = false;
     while (!insertedIntoArray) {
       var randomNumber = Math.floor(Math.random() * counter);
@@ -49,13 +49,13 @@ Deck.prototype.shuffleDeck = function() {
 };
 
 /* Card constructor */
-function Card (point, suit) {
+function Card(point, suit) {
   this.point = point;
   this.suit = suit;
 }
 
 /* function getPointName returns the associated name of any card */
-Card.prototype.getPointName = function () {
+Card.prototype.getPointName = function() {
   if (this.point === 'A') {
     return 'Ace';
   } else if (this.point === 'J') {
@@ -69,17 +69,17 @@ Card.prototype.getPointName = function () {
 };
 
 /* hand constructor */
-function Hand () {
+function Hand() {
   this.cards = [];
 }
 
 /* addCard function adds the card passed in to a hand */
-Hand.prototype.addCard = function (card) {
+Hand.prototype.addCard = function(card) {
   this.cards.push(card);
 }
 
 /* getPoints calculates the points for a hand */
-Hand.prototype.getPoints = function () {
+Hand.prototype.getPoints = function() {
   // makes a copy of the hand array, so we don't modify it
   var hand = this.cards;
   hand = hand.slice(0);
@@ -88,6 +88,7 @@ Hand.prototype.getPoints = function () {
   function compare(card1, card2) {
     return Number(card2.point) - Number(card1.point);
   }
+
   hand.sort(compare);
   var sum = 0;
   for (var i = 0; i < hand.length; i++) {
@@ -108,12 +109,12 @@ Hand.prototype.getPoints = function () {
 };
 
 /* Blackjack game constructor */
-function Blackjack () {
+function Blackjack() {
 
 }
 
 /* compare constructor */
-function CompareHands (playerHand, dealerHand) {
+function CompareHands(playerHand, dealerHand) {
   this.playerHand = playerHand;
   this.dealerHand = dealerHand;
 }
