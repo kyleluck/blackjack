@@ -316,11 +316,12 @@ $(function () {
     $('.alert').hide();
     $('#betup').prop('disabled', true);
     $('#betdown').prop('disabled', true);
-
+    $('#betup').prop('disabled', true);
+    $('#betdown').prop('disabled', true);
     //reset hands
     playerHand.cards = [];
     dealerHand.cards = [];
-    
+
     /*deal initial 4 cards: 2 to dealer and 2 to player*/
     playerHand.addCard(deck.draw());
     playerHand.addCard(deck.draw());
