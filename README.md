@@ -11,4 +11,4 @@ Index.html includes the js file blackjackoop.js. This is the refactored JavaScri
 ![Picture](readme-screenshot.png)
 
 ## Play
-Play at [blackjack link](http://kyleluck.github.io/blackjack/)
+Play [here!](http://kyleluck.github.io/blackjack/)
