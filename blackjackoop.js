@@ -1,4 +1,3 @@
-
 /* Deck constructor */
 function Deck(n) {
   this.cards = [];
@@ -104,9 +103,9 @@ Hand.prototype.getPoints = function() {
   return sum;
 };
 
+/*game constructor*/
 function Game(whoWon, turn) {
-  //variable to determine if still player's
-  //turn or if dealers turn. true = players turn
+  //turn false if dealers turn; true if players turn
   this.turn = turn;
 
   //variable to track who won for betting
@@ -147,8 +146,8 @@ Game.prototype.disableButtons = function (trueOrFalse) {
   $('#stand').prop('disabled', trueOrFalse);
 }
 
-//the function giveCards displays the first two cards in the
-//playerHand and dealerHand arrays
+/*the function giveCards displays the first two cards in the
+  playerHand and dealerHand */
 Game.prototype.giveCards = function (hand, div) {
   if (div === 'dealerhand') {
     var htmlSecondCard = '<div class="col col-md-2" id="dealerholecard"><div class="animatefinal card cardback suitback"><p>Kyle Luck</p></div></div>';
@@ -273,8 +272,10 @@ Bank.prototype.betting = function() {
 var playerHand = new Hand();
 var dealerHand = new Hand();``
 
+/*create bank for betting*/
 var bank = new Bank(500, 5);
 
+/*create game object*/
 var game = new Game("noone", true);
 
 //create deck and shuffle
