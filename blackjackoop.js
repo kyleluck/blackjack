@@ -109,7 +109,7 @@ function comparePlayerToDealer(playerHand, dealerHand) {
   var dealerTotal = dealerHand.getPoints();
 
   //don't show dealer total unless it's dealer's turn (turn === false)
-  if (!turn) {
+  if (!game.turn) {
     $('#dealermessage').html(': ' + dealerTotal);
   }
   else {
@@ -119,44 +119,44 @@ function comparePlayerToDealer(playerHand, dealerHand) {
 
   if (playerTotal === 21) {
     $('#playermessage').append(' Blackjack!');
-    whoWon = "player";
-    bank.betting(whoWon);
+    game.whoWon = "player";
+    bank.betting(game.whoWon);
     return false;
   }
   else if (dealerTotal === 21) {
     $('#dealermessage').append(' Blackjack! - You lose!');
-    whoWon = "dealer";
-    bank.betting(whoWon);
+    game.whoWon = "dealer";
+    bank.betting(game.whoWon);
     return false;
   }
   else if (playerTotal > 21) {
     $('#playermessage').append(' You busted!');
-    whoWon = "dealer";
-    bank.betting(whoWon);
+    game.whoWon = "dealer";
+    bank.betting(game.whoWon);
     return false;
   }
   else if (dealerTotal > 21) {
     $('#dealermessage').append(' You WIN! Dealer busted');
-    whoWon = "player";
-    bank.betting(whoWon);
+    game.whoWon = "player";
+    bank.betting(game.whoWon);
     return false;
   }
-  else if (dealerTotal === playerTotal && !turn && dealerTotal >= 17) {
+  else if (dealerTotal === playerTotal && !game.turn && dealerTotal >= 17) {
     $('#dealermessage').append(' Push!');
-    whoWon = "push";
-    bank.betting(whoWon);
+    game.whoWon = "push";
+    bank.betting(game.whoWon);
     return false;
   }
-  else if (dealerTotal > playerTotal && !turn) {
+  else if (dealerTotal > playerTotal && !game.turn) {
     $('#dealermessage').append(' Dealer WINS!');
-    whoWon = "dealer";
-    bank.betting(whoWon);
+    game.whoWon = "dealer";
+    bank.betting(game.whoWon);
     return false;
   }
-  else if (playerTotal > dealerTotal && !turn && dealerTotal >= 17) {
+  else if (playerTotal > dealerTotal && !game.turn && dealerTotal >= 17) {
     $('#playermessage').append(' You WIN!');
-    whoWon = "player";
-    bank.betting(whoWon);
+    game.whoWon = "player";
+    bank.betting(game.whoWon);
     return false;
   }
   else {
@@ -164,28 +164,13 @@ function comparePlayerToDealer(playerHand, dealerHand) {
   }
 }
 
-function hit(playerOrDealerHand) {
-  playerOrDealerHand.addCard(deck.draw());;
-  var lastCardIndex = playerOrDealerHand.cards.length - 1;
-  var htmlCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
-                  playerOrDealerHand.cards[lastCardIndex].suit + '"><p>' + playerOrDealerHand.cards[lastCardIndex].point +
-                  '</p></div></div>';
+function Game(whoWon, turn) {
+  //variable to determine if still player's
+  //turn or if dealers turn. true = players turn
+  this.turn = turn;
 
-  if (turn) {
-    //players turn
-    $('#playerhand').append(htmlCard);
-  }
-  else {
-    //dealers turn
-    $('#dealerhand').append(htmlCard);
-  }
-
-  var continueGame = comparePlayerToDealer(playerHand, dealerHand);
-  return continueGame;
-}
-
-function Game() {
-
+  //variable to track who won for betting
+  this.whoWon = whoWon;
 }
 
 Game.prototype.dealersTurn = function() {
@@ -211,7 +196,7 @@ Game.prototype.dealersTurn = function() {
         continueGame = false;
       }
       else {
-         continueGame = hit(dealerHand);
+         continueGame = game.hit(dealerHand);
       }
     }
   }
@@ -241,17 +226,37 @@ Game.prototype.giveCards = function (hand, div) {
   $('#' + div).html(htmlFirstCard + htmlSecondCard);
 }
 
+Game.prototype.hit = function (playerOrDealerHand) {
+  playerOrDealerHand.addCard(deck.draw());;
+  var lastCardIndex = playerOrDealerHand.cards.length - 1;
+  var htmlCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
+                  playerOrDealerHand.cards[lastCardIndex].suit + '"><p>' + playerOrDealerHand.cards[lastCardIndex].point +
+                  '</p></div></div>';
+
+  if (game.turn) {
+    //players turn
+    $('#playerhand').append(htmlCard);
+  }
+  else {
+    //dealers turn
+    $('#dealerhand').append(htmlCard);
+  }
+
+  var continueGame = comparePlayerToDealer(playerHand, dealerHand);
+  return continueGame;
+}
+
 function Bank(initialAmount, bet) {
   this.amount = initialAmount;
   this.bet = bet;
 }
 
 Bank.prototype.betting = function() {
-  if (whoWon === "push") {
+  if (game.whoWon === "push") {
     bank.amount = bank.amount;
-  } else if (whoWon === "dealer") {
+  } else if (game.whoWon === "dealer") {
     bank.amount -= bank.bet;
-  } else if (whoWon === "player") {
+  } else if (game.whoWon === "player") {
     bank.amount += bank.bet;
   }
 
@@ -268,16 +273,9 @@ Bank.prototype.betting = function() {
 var playerHand = new Hand();
 var dealerHand = new Hand();``
 
-//variable to determine if still player's
-//turn or if dealers turn. true = players turn
-var turn = true;
-
-//variable to track who won for betting
-var whoWon = "noone";
-
 var bank = new Bank(500, 5);
 
-var game = new Game();
+var game = new Game("noone", true);
 
 //create deck and shuffle
 var deck = new Deck(6); //sets deck.cards to an unshuffledDeck 6 decks
@@ -335,7 +333,7 @@ $(function () {
     dealerHand.addCard(deck.draw());
     dealerHand.addCard(deck.draw());
 
-    turn = true;
+    game.turn = true;
     game.disableButtons(false);
     game.giveCards(playerHand, "playerhand");
     game.giveCards(dealerHand, "dealerhand");
@@ -346,14 +344,14 @@ $(function () {
   });
 
   $('#hit').click(function() {
-    var continueGame = hit(playerHand);
+    var continueGame = game.hit(playerHand);
     if (!continueGame) {
       game.disableButtons(true);
     }
   });
 
   $('#stand').click(function() {
-    turn = false;
+    game.turn = false;
     game.disableButtons(true);
     game.dealersTurn();
   });
