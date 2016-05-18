@@ -104,31 +104,6 @@ Hand.prototype.getPoints = function() {
   return sum;
 };
 
-//**************************************************//
-function disableButtons(trueOrFalse) {
-  $('#hit').prop('disabled', trueOrFalse);
-  $('#stand').prop('disabled', trueOrFalse);
-}
-
-//the function giveCards displays the first two cards in the
-//playerHand and dealerHand arrays
-function giveCards(hand, div) {
-  if (div === 'dealerhand') {
-    var htmlSecondCard = '<div class="col col-md-2" id="dealerholecard"><div class="animatefinal card cardback suitback"><p>Kyle Luck</p></div></div>';
-  }
-  else {
-    var htmlSecondCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
-                        hand.cards[1].suit + '"><p>' + hand.cards[1].point +
-                        '</p></div></div>';
-  }
-  var htmlFirstCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
-                      hand.cards[0].suit + '"><p>' + hand.cards[0].point +
-                      '</p></div></div>';
-
-
-  $('#' + div).html(htmlFirstCard + htmlSecondCard);
-}
-
 function comparePlayerToDealer(playerHand, dealerHand) {
   var playerTotal = playerHand.getPoints();
   var dealerTotal = dealerHand.getPoints();
@@ -240,38 +215,31 @@ Game.prototype.dealersTurn = function() {
       }
     }
   }
-
 };
 
-//logic for dealer's turn
-// function dealersTurn() {
-//   //show dealer card
-//   $('#dealerholecard').html('<div class="animated flipInY card suit' +
-//                       dealerHand.cards[1].suit + '"><p>' + dealerHand.cards[1].point +
-//                       '</p></div>');
-//
-//   //get hand totals
-//   var playerTotal = playerHand.getPoints();
-//   var dealerTotal = dealerHand.getPoints();
-//
-//   //if no winner, hit until dealer wins or busts.
-//   //dealer shouldn't hit on 17
-//   var continueGame = true;
-//   if (dealerTotal >= 17) {
-//     continueGame = comparePlayerToDealer(playerHand, dealerHand);
-//   }
-//   else {
-//     while (continueGame) {
-//       if (dealerTotal > playerTotal) {
-//         $('#dealermessage').append(' Dealer WINS!');
-//         continueGame = false;
-//       }
-//       else {
-//          continueGame = hit(dealerHand);
-//       }
-//     }
-//   }
-// }
+Game.prototype.disableButtons = function (trueOrFalse) {
+  $('#hit').prop('disabled', trueOrFalse);
+  $('#stand').prop('disabled', trueOrFalse);
+}
+
+//the function giveCards displays the first two cards in the
+//playerHand and dealerHand arrays
+Game.prototype.giveCards = function (hand, div) {
+  if (div === 'dealerhand') {
+    var htmlSecondCard = '<div class="col col-md-2" id="dealerholecard"><div class="animatefinal card cardback suitback"><p>Kyle Luck</p></div></div>';
+  }
+  else {
+    var htmlSecondCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
+                        hand.cards[1].suit + '"><p>' + hand.cards[1].point +
+                        '</p></div></div>';
+  }
+  var htmlFirstCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
+                      hand.cards[0].suit + '"><p>' + hand.cards[0].point +
+                      '</p></div></div>';
+
+
+  $('#' + div).html(htmlFirstCard + htmlSecondCard);
+}
 
 function Bank(initialAmount, bet) {
   this.amount = initialAmount;
@@ -317,7 +285,7 @@ deck.shuffleDeck(); //sets shuffles current deck and assign new deck to deck.car
 
 $(function () {
 
-  disableButtons(true);
+  game.disableButtons(true);
   $('.alert').hide();
   $('#bank').html("<p>Bank: $" + bank.amount + "</p>");
   $('#bet').html("<p>Bet: $" + bank.bet + "</p>");
@@ -368,25 +336,25 @@ $(function () {
     dealerHand.addCard(deck.draw());
 
     turn = true;
-    disableButtons(false);
-    giveCards(playerHand, "playerhand");
-    giveCards(dealerHand, "dealerhand");
+    game.disableButtons(false);
+    game.giveCards(playerHand, "playerhand");
+    game.giveCards(dealerHand, "dealerhand");
     var continueGame = comparePlayerToDealer(playerHand, dealerHand);
     if (!continueGame) {
-      disableButtons(true);
+      game.disableButtons(true);
     }
   });
 
   $('#hit').click(function() {
     var continueGame = hit(playerHand);
     if (!continueGame) {
-      disableButtons(true);
+      game.disableButtons(true);
     }
   });
 
   $('#stand').click(function() {
     turn = false;
-    disableButtons(true);
+    game.disableButtons(true);
     game.dealersTurn();
   });
 
