@@ -209,8 +209,11 @@ function hit(playerOrDealerHand) {
   return continueGame;
 }
 
-//logic for dealer's turn
-function dealersTurn() {
+function Game() {
+
+}
+
+Game.prototype.dealersTurn = function() {
   //show dealer card
   $('#dealerholecard').html('<div class="animated flipInY card suit' +
                       dealerHand.cards[1].suit + '"><p>' + dealerHand.cards[1].point +
@@ -237,7 +240,38 @@ function dealersTurn() {
       }
     }
   }
-}
+
+};
+
+//logic for dealer's turn
+// function dealersTurn() {
+//   //show dealer card
+//   $('#dealerholecard').html('<div class="animated flipInY card suit' +
+//                       dealerHand.cards[1].suit + '"><p>' + dealerHand.cards[1].point +
+//                       '</p></div>');
+//
+//   //get hand totals
+//   var playerTotal = playerHand.getPoints();
+//   var dealerTotal = dealerHand.getPoints();
+//
+//   //if no winner, hit until dealer wins or busts.
+//   //dealer shouldn't hit on 17
+//   var continueGame = true;
+//   if (dealerTotal >= 17) {
+//     continueGame = comparePlayerToDealer(playerHand, dealerHand);
+//   }
+//   else {
+//     while (continueGame) {
+//       if (dealerTotal > playerTotal) {
+//         $('#dealermessage').append(' Dealer WINS!');
+//         continueGame = false;
+//       }
+//       else {
+//          continueGame = hit(dealerHand);
+//       }
+//     }
+//   }
+// }
 
 function Bank(initialAmount, bet) {
   this.amount = initialAmount;
@@ -274,6 +308,8 @@ var turn = true;
 var whoWon = "noone";
 
 var bank = new Bank(500, 5);
+
+var game = new Game();
 
 //create deck and shuffle
 var deck = new Deck(6); //sets deck.cards to an unshuffledDeck 6 decks
@@ -351,7 +387,7 @@ $(function () {
   $('#stand').click(function() {
     turn = false;
     disableButtons(true);
-    dealersTurn();
+    game.dealersTurn();
   });
 
 });
