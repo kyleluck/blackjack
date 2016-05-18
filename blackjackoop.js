@@ -145,43 +145,43 @@ function comparePlayerToDealer(playerHand, dealerHand) {
   if (playerTotal === 21) {
     $('#playermessage').append(' Blackjack!');
     whoWon = "player";
-    betting(whoWon);
+    bank.betting(whoWon);
     return false;
   }
   else if (dealerTotal === 21) {
     $('#dealermessage').append(' Blackjack! - You lose!');
     whoWon = "dealer";
-    betting(whoWon);
+    bank.betting(whoWon);
     return false;
   }
   else if (playerTotal > 21) {
     $('#playermessage').append(' You busted!');
     whoWon = "dealer";
-    betting(whoWon);
+    bank.betting(whoWon);
     return false;
   }
   else if (dealerTotal > 21) {
     $('#dealermessage').append(' You WIN! Dealer busted');
     whoWon = "player";
-    betting(whoWon);
+    bank.betting(whoWon);
     return false;
   }
   else if (dealerTotal === playerTotal && !turn && dealerTotal >= 17) {
     $('#dealermessage').append(' Push!');
     whoWon = "push";
-    betting(whoWon);
+    bank.betting(whoWon);
     return false;
   }
   else if (dealerTotal > playerTotal && !turn) {
     $('#dealermessage').append(' Dealer WINS!');
     whoWon = "dealer";
-    betting(whoWon);
+    bank.betting(whoWon);
     return false;
   }
   else if (playerTotal > dealerTotal && !turn && dealerTotal >= 17) {
     $('#playermessage').append(' You WIN!');
     whoWon = "player";
-    betting(whoWon);
+    bank.betting(whoWon);
     return false;
   }
   else {
@@ -239,28 +239,32 @@ function dealersTurn() {
   }
 }
 
+function Bank(initialAmount, bet) {
+  this.amount = initialAmount;
+  this.bet = bet;
+}
 
-function betting(whoWon) {
+Bank.prototype.betting = function() {
   if (whoWon === "push") {
-    bank = bank;
+    bank.amount = bank.amount;
   } else if (whoWon === "dealer") {
-    bank -= bet;
+    bank.amount -= bank.bet;
   } else if (whoWon === "player") {
-    bank += bet;
+    bank.amount += bank.bet;
   }
 
-  if (bank <= 0) {
+  if (bank.amount <= 0) {
     $('.alert').html("Sorry, you're out of money! No worries, we'll replenish your bank!").show();
-    bank = 500;
+    bank.amount = 500;
   }
-  $('#bank').html("Bank: <p>$" + bank + "</p>");
+  $('#bank').html("<p>Bank: $" + bank.amount + "</p>");
   $('#betup').prop('disabled', false);
   $('#betdown').prop('disabled', false);
+};
 
-}
 /*create player and dealer hands */
 var playerHand = new Hand();
-var dealerHand = new Hand();
+var dealerHand = new Hand();``
 
 //variable to determine if still player's
 //turn or if dealers turn. true = players turn
@@ -268,9 +272,8 @@ var turn = true;
 
 //variable to track who won for betting
 var whoWon = "noone";
-//variable for bank amount
-var bank = 500;
-var bet = 5;
+
+var bank = new Bank(500, 5);
 
 //create deck and shuffle
 var deck = new Deck(6); //sets deck.cards to an unshuffledDeck 6 decks
@@ -280,36 +283,36 @@ $(function () {
 
   disableButtons(true);
   $('.alert').hide();
-  $('#bank').html("<p>Bank: $" + bank + "</p>");
-  $('#bet').html("<p>Bet: $" + bet + "</p>");
+  $('#bank').html("<p>Bank: $" + bank.amount + "</p>");
+  $('#bet').html("<p>Bet: $" + bank.bet + "</p>");
 
   $('#betup').click(function() {
-    bet += 5;
-    if (bet > bank) {
-      bet -= 5;
-    } else if (bet >= 100) {
-      bet = 100;
+    bank.bet += 5;
+    if (bank.bet > bank.amount) {
+      bank.bet -= 5;
+    } else if (bank.bet >= 100) {
+      bank.bet = 100;
     }
-    $('#bet').html("<p> Bet: $" + bet + "</p>");
+    $('#bet').html("<p> Bet: $" + bank.bet + "</p>");
   });
 
   $('#betdown').click(function() {
-    if (bet <= 5) {
-      bet = 5;
+    if (bank.bet <= 5) {
+      bank.bet = 5;
     } else {
-      bet -= 5;
+      bank.bet -= 5;
     }
-    $('#bet').html("<p> Bet: $" + bet + "</p>");
+    $('#bet').html("<p> Bet: $" + bank.bet + "</p>");
   });
 
   $('#betmax').click(function() {
-      bet = 100;
-      $('#bet').html("<p>Bet: $" + bet + "</p>");
+      bank.bet = 100;
+      $('#bet').html("<p>Bet: $" + bank.bet + "</p>");
   });
 
   $('#betmin').click(function() {
-      bet = 5;
-      $('#bet').html("<p>Bet: $" + bet + "</p>");
+      bank.bet = 5;
+      $('#bet').html("<p>Bet: $" + bank.bet + "</p>");
   });
 
   $('#deal').click(function() {
