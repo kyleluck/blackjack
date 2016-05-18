@@ -8,4 +8,4 @@ Index.html includes the js file blackjackoop.js. This is the refactored JavaScri
 
 ## Screenshot
 
-![Picture](https://www.dropbox.com/s/yg5t12on6gd4pu0/readme-screenshot.png?dl=0)
+![Picture](readme-screenshot.png)
