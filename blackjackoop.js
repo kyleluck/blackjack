@@ -104,7 +104,89 @@ Hand.prototype.getPoints = function() {
   return sum;
 };
 
-function comparePlayerToDealer(playerHand, dealerHand) {
+function Game(whoWon, turn) {
+  //variable to determine if still player's
+  //turn or if dealers turn. true = players turn
+  this.turn = turn;
+
+  //variable to track who won for betting
+  this.whoWon = whoWon;
+}
+
+Game.prototype.dealersTurn = function() {
+  //show dealer card
+  $('#dealerholecard').html('<div class="animated flipInY card suit' +
+                      dealerHand.cards[1].suit + '"><p>' + dealerHand.cards[1].point +
+                      '</p></div>');
+
+  //get hand totals
+  var playerTotal = playerHand.getPoints();
+  var dealerTotal = dealerHand.getPoints();
+
+  //if no winner, hit until dealer wins or busts.
+  //dealer shouldn't hit on 17
+  var continueGame = true;
+  if (dealerTotal >= 17) {
+    continueGame = game.comparePlayerToDealer(playerHand, dealerHand);
+  }
+  else {
+    while (continueGame) {
+      if (dealerTotal > playerTotal) {
+        $('#dealermessage').append(' Dealer WINS!');
+        continueGame = false;
+      }
+      else {
+         continueGame = game.hit(dealerHand);
+      }
+    }
+  }
+};
+
+Game.prototype.disableButtons = function (trueOrFalse) {
+  $('#hit').prop('disabled', trueOrFalse);
+  $('#stand').prop('disabled', trueOrFalse);
+}
+
+//the function giveCards displays the first two cards in the
+//playerHand and dealerHand arrays
+Game.prototype.giveCards = function (hand, div) {
+  if (div === 'dealerhand') {
+    var htmlSecondCard = '<div class="col col-md-2" id="dealerholecard"><div class="animatefinal card cardback suitback"><p>Kyle Luck</p></div></div>';
+  }
+  else {
+    var htmlSecondCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
+                        hand.cards[1].suit + '"><p>' + hand.cards[1].point +
+                        '</p></div></div>';
+  }
+  var htmlFirstCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
+                      hand.cards[0].suit + '"><p>' + hand.cards[0].point +
+                      '</p></div></div>';
+
+
+  $('#' + div).html(htmlFirstCard + htmlSecondCard);
+}
+
+Game.prototype.hit = function (playerOrDealerHand) {
+  playerOrDealerHand.addCard(deck.draw());;
+  var lastCardIndex = playerOrDealerHand.cards.length - 1;
+  var htmlCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
+                  playerOrDealerHand.cards[lastCardIndex].suit + '"><p>' + playerOrDealerHand.cards[lastCardIndex].point +
+                  '</p></div></div>';
+
+  if (game.turn) {
+    //players turn
+    $('#playerhand').append(htmlCard);
+  }
+  else {
+    //dealers turn
+    $('#dealerhand').append(htmlCard);
+  }
+
+  var continueGame = game.comparePlayerToDealer(playerHand, dealerHand);
+  return continueGame;
+}
+
+Game.prototype.comparePlayerToDealer = function(playerHand, dealerHand) {
   var playerTotal = playerHand.getPoints();
   var dealerTotal = dealerHand.getPoints();
 
@@ -162,88 +244,6 @@ function comparePlayerToDealer(playerHand, dealerHand) {
   else {
     return true;
   }
-}
-
-function Game(whoWon, turn) {
-  //variable to determine if still player's
-  //turn or if dealers turn. true = players turn
-  this.turn = turn;
-
-  //variable to track who won for betting
-  this.whoWon = whoWon;
-}
-
-Game.prototype.dealersTurn = function() {
-  //show dealer card
-  $('#dealerholecard').html('<div class="animated flipInY card suit' +
-                      dealerHand.cards[1].suit + '"><p>' + dealerHand.cards[1].point +
-                      '</p></div>');
-
-  //get hand totals
-  var playerTotal = playerHand.getPoints();
-  var dealerTotal = dealerHand.getPoints();
-
-  //if no winner, hit until dealer wins or busts.
-  //dealer shouldn't hit on 17
-  var continueGame = true;
-  if (dealerTotal >= 17) {
-    continueGame = comparePlayerToDealer(playerHand, dealerHand);
-  }
-  else {
-    while (continueGame) {
-      if (dealerTotal > playerTotal) {
-        $('#dealermessage').append(' Dealer WINS!');
-        continueGame = false;
-      }
-      else {
-         continueGame = game.hit(dealerHand);
-      }
-    }
-  }
-};
-
-Game.prototype.disableButtons = function (trueOrFalse) {
-  $('#hit').prop('disabled', trueOrFalse);
-  $('#stand').prop('disabled', trueOrFalse);
-}
-
-//the function giveCards displays the first two cards in the
-//playerHand and dealerHand arrays
-Game.prototype.giveCards = function (hand, div) {
-  if (div === 'dealerhand') {
-    var htmlSecondCard = '<div class="col col-md-2" id="dealerholecard"><div class="animatefinal card cardback suitback"><p>Kyle Luck</p></div></div>';
-  }
-  else {
-    var htmlSecondCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
-                        hand.cards[1].suit + '"><p>' + hand.cards[1].point +
-                        '</p></div></div>';
-  }
-  var htmlFirstCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
-                      hand.cards[0].suit + '"><p>' + hand.cards[0].point +
-                      '</p></div></div>';
-
-
-  $('#' + div).html(htmlFirstCard + htmlSecondCard);
-}
-
-Game.prototype.hit = function (playerOrDealerHand) {
-  playerOrDealerHand.addCard(deck.draw());;
-  var lastCardIndex = playerOrDealerHand.cards.length - 1;
-  var htmlCard = '<div class="col col-md-2"><div class="animatefinal card suit' +
-                  playerOrDealerHand.cards[lastCardIndex].suit + '"><p>' + playerOrDealerHand.cards[lastCardIndex].point +
-                  '</p></div></div>';
-
-  if (game.turn) {
-    //players turn
-    $('#playerhand').append(htmlCard);
-  }
-  else {
-    //dealers turn
-    $('#dealerhand').append(htmlCard);
-  }
-
-  var continueGame = comparePlayerToDealer(playerHand, dealerHand);
-  return continueGame;
 }
 
 function Bank(initialAmount, bet) {
@@ -337,7 +337,7 @@ $(function () {
     game.disableButtons(false);
     game.giveCards(playerHand, "playerhand");
     game.giveCards(dealerHand, "dealerhand");
-    var continueGame = comparePlayerToDealer(playerHand, dealerHand);
+    var continueGame = game.comparePlayerToDealer(playerHand, dealerHand);
     if (!continueGame) {
       game.disableButtons(true);
     }
